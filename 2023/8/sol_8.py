@@ -11,24 +11,17 @@ with open('input.in') as f:
                 lambda char: char.isalnum() or char.isspace(), line)).split()]
     }
 
-def part1():
-    pos = 'AAA'
+def path_length(pos, goal_end):
     for step, instr in enumerate(cycle(instrs)):
-        if pos == 'ZZZ': break
+        if pos.endswith(goal_end): break
         pos = network[pos][instr]
     return step
 
-def part2():
-    def path_length(start):
-        pos = start
-        for step, instr in enumerate(cycle(instrs)):
-            if pos.endswith('Z'): break
-            pos = network[pos][instr]
-        return step
+part1_answer = path_length('AAA', 'ZZZ')
 
-    # Should not work in general, but apparently works for this input
-    return lcm(*(path_length(start)
-                 for start in network.keys() if start.endswith('A')))
+# Should not work in general, but apparently works for this input
+part2_answer = lcm(*(path_length(start, 'Z')
+                     for start in network.keys() if start.endswith('A')))
 
-print(f"Part 1: {part1()}")
-print(f"Part 2: {part2()}")
+print(f"Part 1: {part1_answer}")
+print(f"Part 2: {part2_answer}")
